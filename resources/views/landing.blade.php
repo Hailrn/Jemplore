@@ -1,0 +1,9 @@
+<x-main>    
+    <x-navbar></x-navbar>
+    <x-landing.hero-section></x-landing.hero-section>
+    <x-landing.category-section></x-landing.category-section>
+    <x-landing.featured-destinations></x-landing.featured-destinations>
+    <x-landing.why-visit-section></x-landing.why-visit-section>
+    <x-landing.upcoming-events></x-landing.upcoming-events>
+    <x-footer></x-footer>
+</x-main>
