@@ -12,9 +12,8 @@
 @foreach ($navItems as $item)
     @php
         $isActive = $item['isActive'] ?? false;
-        
         $baseClasses = 'flex items-center px-4 py-2 rounded-lg text-sm transition duration-150';
-        $activeClasses = 'bg-blue-500 text-white shadow-md';
+        $activeClasses = 'bg-teal-500 text-white shadow-md';
         $inactiveClasses = 'text-gray-600 hover:bg-gray-100 hover:text-gray-800';
         $class = $isActive ? $baseClasses . ' ' . $activeClasses : $baseClasses . ' ' . $inactiveClasses;
     @endphp
