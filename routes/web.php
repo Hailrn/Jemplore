@@ -13,7 +13,7 @@ Route::name('public.')->group(function () {
 
 // Owner
 Route::prefix('owner')->name('owner.')->group(function () {
-    Route::get('/dashboard', function () { return view('dasboardowner'); })->name('dashboard');
+    Route::get('/dashboard', function () { return view('dashboardowner'); })->name('dashboard');
     Route::get('/manage-events', function () { return view('manageevents'); })->name('events.manage');
     Route::get('/profile', function () { return view('halkelolaprofil'); })->name('profile.manage');
     Route::get('/submission', function () { return view('submission'); })->name('submission.status');
