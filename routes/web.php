@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('index');
+    return view('landing');
 });
 
 Route::get('/', function () {
@@ -24,4 +24,16 @@ Route::get('/', function () {
 
 Route::get('/', function () {
     return view('performance');
+});
+Route::get('/destination', function () {
+    return view('destination');
+});
+Route::get('/culinary', function () {
+    return view('culinary');
+});
+Route::get('/event', function () {
+    return view('event');
+});
+Route::get('/package', function () {
+    return view('tour-package');
 });
