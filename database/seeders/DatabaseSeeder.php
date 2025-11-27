@@ -17,14 +17,14 @@ class DatabaseSeeder extends Seeder
     {
         User::factory()->create([
             'name' => 'Admin Jemplore',
-            'email' => '242410103063@mail.unej.ac.id',
+            'email' => '242410103000@mail.unej.ac.id',
             'role' => 'admin',
             'google_id' => '12345_admin', 
         ]);
 
         $mainOwner = User::factory()->create([
             'name' => 'Juragan Tumpak Sewu',
-            'email' => 'xwildan07@gmail.com',
+            'email' => 'test@gmail.com',
             'role' => 'owner',
             'google_id' => '12345_owner',
         ]);
