@@ -4,7 +4,7 @@
     <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col md:flex-row h-full">
         
         <div class="w-full md:w-[350px] h-[250px] md:h-auto relative shrink-0 overflow-hidden">
-            <img src="{{ asset('images/' . $item['image']) }}" 
+            <img src="{{ asset('storage/' . $item['image']) }}" 
                  alt="{{ $item['title'] }}" 
                  class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
             

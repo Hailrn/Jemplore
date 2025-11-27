@@ -76,7 +76,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center">
-                    <img src="{{ asset('images/LogoAtas.png') }}" alt="Jemplore Logo" class="h-12 drop-shadow-lg">
+                    <img src="{{ asset('storage/LogoAtas.png') }}" alt="Jemplore Logo" class="h-12 drop-shadow-lg">
                 </div>
                 
                 <ul class="hidden md:flex space-x-8 font-medium">

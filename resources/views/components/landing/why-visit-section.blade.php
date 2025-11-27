@@ -55,19 +55,19 @@
             <div class="relative h-[500px] w-full hidden lg:grid grid-cols-2 gap-4 animate-fade-in-right">
                 
                 <div class="rounded-2xl overflow-hidden shadow-xl group">
-                    <img src="{{ asset('images/tumpak-sewu-vert.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="Waterfall">
+                    <img src="{{ asset('storage/tumpak-sewu-vert.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="Waterfall">
                 </div>
 
                 <div class="rounded-2xl overflow-hidden shadow-xl group">
-                    <img src="{{ asset('images/papuma-vert.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="Beach">
+                    <img src="{{ asset('storage/papuma-vert.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="Beach">
                 </div>
 
                 <div class="rounded-2xl overflow-hidden shadow-xl group">
-                    <img src="{{ asset('images/foods.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="Foods">
+                    <img src="{{ asset('storage/foods.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="Foods">
                 </div>
 
                 <div class="rounded-2xl overflow-hidden shadow-xl group">
-                    <img src="{{ asset('images/coffee-beans.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="Coffee">
+                    <img src="{{ asset('storage/coffee-beans.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="Coffee">
                 </div>
 
                 <div class="absolute -z-10 bg-[#47b6c2] w-64 h-64 rounded-full blur-[100px] opacity-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>

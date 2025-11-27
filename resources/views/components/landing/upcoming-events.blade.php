@@ -1,7 +1,8 @@
+@props(['events' => []])
+
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-        
         <div>
             <h2 class="text-3xl md:text-4xl font-bold text-[#060b0b] mb-2">
                 Upcoming Events
@@ -11,8 +12,8 @@
             </p>
         </div>
 
-        <a href="#" class="group flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#47b6c2]/30 hover:bg-[#47b6c2]/5 transition text-[#47b6c2] font-medium">
-            View Calendar
+        <a href="{{ route('public.events') }}" class="group flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#47b6c2]/30 hover:bg-[#47b6c2]/5 transition text-[#47b6c2] font-medium">
+            View More Events
             <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
             </svg>
@@ -21,28 +22,11 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         
-        @php
-            $events = [
-                [
-                    'date' => 'Dec 15, 2025',
-                    'title' => 'Jember Fashion Carnaval',
-                    'desc' => 'Join us for an unforgettable cultural experience in Jember with spectacular costumes.',
-                    'image' => 'carnaval.png' // Pastikan file ini ada
-                ],
-                [
-                    'date' => 'Nov 28, 2025',
-                    'title' => 'Coffee Festival',
-                    'desc' => 'Celebrate the aroma of world-class tobacco and coffee in a heritage atmosphere.',
-                    'image' => 'coffee-beans-festival.png' // Pastikan file ini ada
-                ],
-            ];
-        @endphp
-
         @foreach($events as $event)
             <article class="flex flex-col sm:flex-row bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group h-full sm:h-[200px]">
                 
                 <div class="w-full sm:w-48 h-48 sm:h-full relative overflow-hidden shrink-0">
-                    <img src="{{ asset('images/' . $event['image']) }}" 
+                    <img src="{{ asset('storage/' . $event['image']) }}" 
                          alt="{{ $event['title'] }}" 
                          class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
                     
@@ -63,7 +47,7 @@
                     </h3>
 
                     <p class="text-[#060b0b]/60 text-sm leading-relaxed line-clamp-2">
-                        {{ $event['desc'] }}
+                        {{ $event['description'] }}
                     </p>
 
                 </div>

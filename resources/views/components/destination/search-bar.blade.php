@@ -23,8 +23,6 @@
             <div class="flex flex-wrap md:flex-nowrap items-center gap-3 w-full lg:w-auto justify-end">
                 
                 @php
-                    // Kita definisikan filter apa aja yang mau ditampilin
-                    // Nanti bisa dikembangin jadi <select> beneran
                     $filters = [
                         ['label' => 'Category', 'value' => 'All'],
                         ['label' => 'Location', 'value' => 'All Locations'],

@@ -3,7 +3,7 @@
     <article class="flex flex-col w-full bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group h-full">
         
         <div class="h-64 w-full relative overflow-hidden">
-            <img src="{{ asset('images/' . $item['image']) }}" 
+            <img src="{{ asset('storage/' . $item['image']) }}" 
                     alt="{{ $item['title'] }}" 
                     class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
             

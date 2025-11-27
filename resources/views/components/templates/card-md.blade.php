@@ -1,10 +1,10 @@
 @props(['data' => []])
 
 @foreach($data as $item)
-    <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full">
+    <a href="{{ route('public.destination.show', $item['id']) }}" class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full">
         
         <div class="relative h-56 w-full overflow-hidden">
-            <img src="{{ asset('images/' . $item['image']) }}" 
+            <img src="{{ asset('storage/' . $item['image']) }}" 
                  alt="{{ $item['title'] }}" 
                  class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
             
@@ -46,5 +46,5 @@
                 @endforeach
             </div>
         </div>
-    </div>
+    </a>
 @endforeach

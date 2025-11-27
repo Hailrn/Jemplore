@@ -4,148 +4,99 @@
     <div class="flex justify-between items-center mb-8">
         <h2 class="text-3xl font-light text-gray-800 border-b pb-4 mb-4">Content Verification Queue</h2>
         <span class="inline-flex items-center px-4 py-2 text-sm font-semibold rounded-full bg-orange-100 text-orange-800">
-            12 Pending Items
+            {{ $submissions->count() }} Pending Items
         </span>
     </div>
 
+    @if(session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="space-y-6">
         
-        {{-- CARD 1: Tumpak Sewu Waterfall --}}
-        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-            <div class="flex justify-between items-start mb-3">
-                <h3 class="text-xl font-bold text-gray-900">Tumpak Sewu Waterfall</h3>
-                <span class="inline-block px-3 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-700">
-                    Profile Update
-                </span>
-            </div>
-            
-            <p class="text-sm text-gray-500 mb-2">
-                Submitted by: Tumpak Sewu Team • 2025-11-10
-            </p>
-            <p class="text-gray-700 mb-4">
-                Updated description and added 3 new photos
-            </p>
+        @forelse($submissions as $item)
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+                <div class="flex justify-between items-start mb-3">
+                    <h3 class="text-xl font-bold text-gray-900">
+                        {{ $item->tourismObject->name ?? 'New Submission' }}
+                    </h3>
+                    <span class="inline-block px-3 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-700 uppercase">
+                        {{ str_replace('_', ' ', $item->submission_type) }}
+                    </span>
+                </div>
+                
+                <p class="text-sm text-gray-500 mb-2">
+                    Submitted by: <strong>{{ $item->user->name }}</strong> • {{ $item->created_at->format('d M Y, H:i') }}
+                </p>
+                
+                <p class="text-gray-700 mb-4">
+                    Changes on: 
+                    @foreach(array_keys($item->payload) as $key)
+                        <span class="bg-gray-100 px-2 py-1 rounded text-xs font-mono text-gray-600">{{ $key }}</span>
+                    @endforeach
+                </p>
 
-            <div class="flex space-x-3 border-t pt-4">
-                {{-- Tombol untuk menampilkan Modal --}}
-                <button 
-                    onclick="openPreview('Tumpak Sewu Waterfall', 'Updated description and added 3 new photos')" 
-                    class="preview-btn flex items-center px-4 py-2 text-sm font-medium rounded-lg text-blue-600 bg-blue-50 hover:bg-blue-100 transition">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                    Preview Changes
-                </button>
-                <button class="flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-green-500 hover:bg-green-600 transition shadow-md">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                    Approve
-                </button>
-                <button class="flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 transition shadow-md">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    Reject
-                </button>
-            </div>
-        </div>
+                <div class="flex space-x-3 border-t pt-4">
+                    
+                    <button 
+                        onclick='openPreview(@json($item->payload), "{{ $item->tourismObject->name ?? "New" }}")' 
+                        class="flex items-center px-4 py-2 text-sm font-medium rounded-lg text-blue-600 bg-blue-50 hover:bg-blue-100 transition">
+                        <i class="fas fa-eye mr-2"></i> Preview Changes
+                    </button>
 
-        {{-- CARD 2: Sidomulyo Coffee Plantation --}}
-        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-            <div class="flex justify-between items-start mb-3">
-                <h3 class="text-xl font-bold text-gray-900">Sidomulyo Coffee Plantation</h3>
-                <span class="inline-block px-3 py-1 text-xs font-medium rounded-full bg-teal-100 text-teal-700">
-                    Event Creation
-                </span>
-            </div>
-            
-            <p class="text-sm text-gray-500 mb-2">
-                Submitted by: Coffee Plantation Owner • 2025-11-10
-            </p>
-            <p class="text-gray-700 mb-4">
-                New event: Coffee Tasting Workshop on Dec 5
-            </p>
+                    <form action="{{ route('admin.verification.approve', $item->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" onclick="return confirm('Are you sure to approve?')" class="flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-green-500 hover:bg-green-600 transition shadow-md">
+                            <i class="fas fa-check mr-2"></i> Approve
+                        </button>
+                    </form>
 
-            <div class="flex space-x-3 border-t pt-4">
-                <button 
-                    onclick="openPreview('Sidomulyo Coffee Plantation', 'New event: Coffee Tasting Workshop on Dec 5')" 
-                    class="preview-btn flex items-center px-4 py-2 text-sm font-medium rounded-lg text-blue-600 bg-blue-50 hover:bg-blue-100 transition">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                    Preview Changes
-                </button>
-                <button class="flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-green-500 hover:bg-green-600 transition shadow-md">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                    Approve
-                </button>
-                <button class="flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 transition shadow-md">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    Reject
-                </button>
+                    <button onclick="openRejectModal({{ $item->id }})" class="flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 transition shadow-md">
+                        <i class="fas fa-times mr-2"></i> Reject
+                    </button>
+                </div>
             </div>
-        </div>
+        @empty
+            <div class="text-center py-10 bg-white rounded-xl shadow-sm">
+                <p class="text-gray-500">No pending submissions. Good job!</p>
+            </div>
+        @endforelse
 
-        {{-- CARD 3: Papuma Beach --}}
-        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-            <div class="flex justify-between items-start mb-3">
-                <h3 class="text-xl font-bold text-gray-900">Papuma Beach</h3>
-                <span class="inline-block px-3 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-700">
-                    Profile Update
-                </span>
-            </div>
-            
-            <p class="text-sm text-gray-500 mb-2">
-                Submitted by: Papuma Beach Admin • 2025-11-09
-            </p>
-            <p class="text-gray-700 mb-4">
-                Updated operating hours and ticket prices
-            </p>
-
-            <div class="flex space-x-3 border-t pt-4">
-                <button 
-                    onclick="openPreview('Papuma Beach', 'Updated operating hours and ticket prices')" 
-                    class="preview-btn flex items-center px-4 py-2 text-sm font-medium rounded-lg text-blue-600 bg-blue-50 hover:bg-blue-100 transition">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                    Preview Changes
-                </button>
-                <button class="flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-green-500 hover:bg-green-600 transition shadow-md">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                    Approve
-                </button>
-                <button class="flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 transition shadow-md">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    Reject
-                </button>
-            </div>
+        <div class="mt-4">
+            {{ $submissions->links() }}
         </div>
 
     </div>
     
-    {{-- =============================================== --}}
-    {{-- MODAL PREVIEW CHANGES --}}
-    {{-- =============================================== --}}
-    {{-- KOREKSI: Menghapus overlay gelap dan mempertahankan hanya positioning --}}
-    <div id="previewModal" class="fixed inset-0 flex items-center justify-center z-[100] hidden">
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-xl mx-4 transform transition-all duration-300 scale-100" 
-             aria-modal="true" role="dialog" aria-labelledby="modal-title">
-            
-            {{-- Header Modal --}}
-            <div class="px-6 py-4 border-b flex justify-between items-center">
-                <h3 id="modal-title" class="text-xl font-semibold text-gray-800">Preview Changes - <span id="modalTitleDestination"></span></h3>
-                <button onclick="closePreview()" class="text-gray-400 hover:text-gray-600 transition">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
+    <div id="previewModal" class="fixed inset-0 flex items-center justify-center z-[100] hidden bg-black/50 backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl mx-4 overflow-hidden">
+            <div class="px-6 py-4 border-b flex justify-between items-center bg-gray-50">
+                <h3 class="text-lg font-bold text-gray-800">Preview Changes: <span id="modalTitleDestination"></span></h3>
+                <button onclick="closePreview()" class="text-gray-400 hover:text-red-500"><i class="fas fa-times"></i></button>
             </div>
             
-            {{-- Konten Modal --}}
-            <div class="p-6 h-96 overflow-y-auto">
-                {{-- Ini adalah "pop-up" Content Preview di dalam modal --}}
-                <div class="bg-white rounded-lg shadow-lg border border-gray-200 p-6 flex flex-col items-center justify-center h-full">
-                    <h4 class="text-lg font-semibold text-gray-700 mb-4">Content Preview</h4>
-                    <p class="text-gray-600 text-center" id="modalContentPreviewText">
-                        {{-- Teks konten akan dimasukkan di sini oleh JS --}}
-                    </p>
+            <div class="p-6 h-96 overflow-y-auto" id="modalContent">
+            </div>
+        </div>
+    </div>
+
+    <div id="rejectModal" class="fixed inset-0 flex items-center justify-center z-[100] hidden bg-black/50 backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4">Reject Submission</h3>
+            
+            <form id="rejectForm" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Reason for Rejection</label>
+                    <textarea name="reason" rows="3" class="w-full border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring-red-500" required placeholder="e.g. Data tidak lengkap..."></textarea>
                 </div>
-            </div>
-            
-            {{-- Footer Modal --}}
-            <div class="px-6 py-4 border-t">
-                <p class="text-sm text-gray-700 font-medium">Changes: <span id="modalChangesSummary"></span></p>
-            </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="closeRejectModal()" class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Cancel</button>
+                    <button type="submit" class="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700">Reject Now</button>
+                </div>
+            </form>
         </div>
     </div>
     
@@ -153,35 +104,80 @@
 
 @section('scripts')
 <script>
-    const modal = document.getElementById('previewModal');
-    const modalTitleDestination = document.getElementById('modalTitleDestination');
-    const modalChangesSummary = document.getElementById('modalChangesSummary');
-    const modalContentPreviewText = document.getElementById('modalContentPreviewText');
+    function openPreview(payload, name) {
+        document.getElementById('modalTitleDestination').innerText = name;
+        
+        let html = '<table class="w-full text-sm text-left text-gray-500 border border-gray-200 rounded-lg overflow-hidden">';
+        html += '<thead class="text-xs text-gray-700 uppercase bg-gray-50"><tr><th class="px-6 py-3 w-1/3">Field Yang Diubah</th><th class="px-6 py-3">Isi Baru</th></tr></thead><tbody class="divide-y divide-gray-200">';
+        
+        for (const [key, value] of Object.entries(payload)) {
+            let displayValue = value;
 
-    function openPreview(destinationName, changesSummary) {
-        modalTitleDestination.textContent = destinationName;
-        modalChangesSummary.textContent = changesSummary;
-        modalContentPreviewText.textContent = changesSummary;
+            if (['thumbnail', 'image'].includes(key) && value) {
+                displayValue = `<div class="relative w-32 h-20 rounded-lg overflow-hidden border border-gray-300 shadow-sm">
+                                    <img src="/storage/${value}" class="w-full h-full object-cover">
+                                </div>
+                                <div class="text-xs text-gray-400 mt-1">${value}</div>`;
+            }
+            
+            else if (key === 'gallery' && typeof value === 'object' && value !== null) {
+                displayValue = '<div class="flex gap-2 flex-wrap">';
+                
+                for (const [order, path] of Object.entries(value)) {
+                    displayValue += `
+                        <div class="relative w-24 h-24 rounded-lg overflow-hidden border border-gray-300 shadow-sm group">
+                            <img src="/storage/${path}" class="w-full h-full object-cover">
+                            <div class="absolute bottom-0 left-0 bg-black/50 text-white text-[10px] px-1 w-full text-center">
+                                Img #${order}
+                            </div>
+                        </div>`;
+                }
+                displayValue += '</div>';
+            }
 
-        modal.classList.remove('hidden');
-        document.body.classList.add('overflow-hidden'); 
+            else if (Array.isArray(value)) {
+                displayValue = value.map(item => 
+                    `<span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mr-1">${item}</span>`
+                ).join('');
+            }
+            
+            else if (value === null || value === '') {
+                displayValue = '<span class="text-gray-400 italic">(Dikosongkan)</span>';
+            }
+
+            html += `<tr class="bg-white hover:bg-gray-50 transition">
+                        <td class="px-6 py-4 font-medium text-gray-900 capitalize align-top">
+                            ${key.replace(/_/g, ' ')}
+                        </td>
+                        <td class="px-6 py-4 align-top text-gray-700">
+                            ${displayValue}
+                        </td>
+                     </tr>`;
+        }
+        html += '</tbody></table>';
+
+        document.getElementById('modalContent').innerHTML = html;
+        document.getElementById('previewModal').classList.remove('hidden');
     }
 
     function closePreview() {
-        modal.classList.add('hidden');
-        document.body.classList.remove('overflow-hidden');
+        document.getElementById('previewModal').classList.add('hidden');
     }
 
-    modal.addEventListener('click', (e) => {
-        if (e.target.id === 'previewModal') {
-            closePreview();
-        }
-    });
+    function openRejectModal(id) {
+        document.getElementById('rejectForm').action = `/admin/verification/${id}/reject`;
+        document.getElementById('rejectModal').classList.remove('hidden');
+    }
 
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-            closePreview();
-        }
-    });
+    function closeRejectModal() {
+        document.getElementById('rejectModal').classList.add('hidden');
+    }
+
+    window.onclick = function(event) {
+        const previewModal = document.getElementById('previewModal');
+        const rejectModal = document.getElementById('rejectModal');
+        if (event.target == previewModal) closePreview();
+        if (event.target == rejectModal) closeRejectModal();
+    }
 </script>
 @endsection

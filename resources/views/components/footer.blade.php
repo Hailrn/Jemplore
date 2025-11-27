@@ -6,7 +6,7 @@
             <div class="flex flex-col gap-4">
                 <div class="flex items-center gap-2">
                     <div class="w-10 h-10 rounded-[10px] bg-gradient-to-b from-[#47b6c2] to-[#5dd2de] flex items-center justify-center shadow-lg">
-                         {{-- <img src="{{ asset('img/logo-vector.svg') }}" class="w-6 h-6 object-contain" alt="Logo"> --}}
+                        <img src="{{ asset('img/logo-vector.svg') }}" class="w-6 h-6 object-contain" alt="Logo"> --}}
                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M19.9901 9.99506C19.9901 14.9856 14.4538 20.183 12.5947 21.7882C12.4215 21.9184 12.2107 21.9889 11.994 21.9889C11.7773 21.9889 11.5665 21.9184 11.3933 21.7882C9.53424 20.183 3.99799 14.9856 3.99799 9.99506C3.99799 7.87438 4.84042 5.84055 6.33997 4.34101C7.83952 2.84146 9.87334 1.99902 11.994 1.99902C14.1147 1.99902 16.1485 2.84146 17.6481 4.34101C19.1476 5.84055 19.9901 7.87438 19.9901 9.99506Z" stroke="white" stroke-width="1.99901" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M11.9941 12.9936C13.6501 12.9936 14.9926 11.6511 14.9926 9.99509C14.9926 8.33906 13.6501 6.99658 11.9941 6.99658C10.338 6.99658 8.99554 8.33906 8.99554 9.99509C8.99554 11.6511 10.338 12.9936 11.9941 12.9936Z" stroke="white" stroke-width="1.99901" stroke-linecap="round" stroke-linejoin="round"/>

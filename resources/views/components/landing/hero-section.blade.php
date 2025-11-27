@@ -1,5 +1,5 @@
 <section class="relative w-full h-[600px] lg:h-[700px] bg-cover bg-center group" 
-    style="background-image: url('{{ asset('images/hero-bg.png') }}');">
+    style="background-image: url('{{ asset('storage/hero-bg.png') }}');">
     
     <div class="absolute inset-0 bg-gradient-to-r from-[#060b0b]/80 via-[#060b0b]/50 to-transparent"></div>
 
