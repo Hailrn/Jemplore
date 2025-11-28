@@ -34,19 +34,23 @@ class OwnerController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
+            'address' => 'required|string|max:255', 
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'tags' => 'array|max:3', 
-            'tags.*' => 'exists:tags,id',
+            'tags' => 'array|max:3',
             'thumbnail' => 'nullable|image|max:2048',
+            'ticket_price' => 'nullable|string',
+            'opening_hours' => 'nullable',
+            'closing_hours' => 'nullable',
         ]);
 
         $payload = [
             'name' => $request->name,
+            'address' => $request->address, 
             'description' => $request->description,
             'category_id' => $request->category_id,
             'tags' => $request->tags,
-            'ticket_price' => $request->ticket_price, 
+            'ticket_price' => $request->ticket_price,
             'opening_hours' => $request->opening_hours,
             'closing_hours' => $request->closing_hours,
         ];
@@ -56,22 +60,14 @@ class OwnerController extends Controller
             $payload['thumbnail'] = $path;
         }
 
-        if ($request->hasFile('thumbnail')) {
-            $path = $request->file('thumbnail')->store('submissions', 'public');
-            $payload['thumbnail'] = $path;
-        }
-
         if ($request->hasFile('gallery')) {
             $galleryUpdates = [];
-            
             foreach ($request->file('gallery') as $sortOrder => $file) {
                 if ($file->isValid()) {
                     $path = $file->store('submissions', 'public');
-                    
                     $galleryUpdates[$sortOrder] = $path;
                 }
             }
-
             if (!empty($galleryUpdates)) {
                 $payload['gallery'] = $galleryUpdates;
             }
@@ -86,6 +82,30 @@ class OwnerController extends Controller
         ]);
 
         return redirect()->route('owner.submission.status')
-            ->with('success', 'Perubahan profil telah diajukan dan menunggu verifikasi Admin.');
+            ->with('success', 'Perubahan profil telah diajukan.');
+    }
+
+    public function submissionStatus()
+    {
+        $user = Auth::user();
+        
+        $submissions = Submission::where('user_id', $user->id)
+            ->latest()
+            ->get();
+
+        return view('owner.submission', compact('submissions'));
+    }
+
+    public function deleteAccount(Request $request)
+    {
+        $user = Auth::user();
+
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        $user->delete();
+
+        return redirect()->route('public.home')->with('success', 'Akun Anda dan seluruh data wisata telah berhasil dihapus.');
     }
 }

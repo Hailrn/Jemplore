@@ -420,12 +420,7 @@
                 <div class="sidebar-subtitle">Jemplore System</div>
             </div>
             <nav class="sidebar-nav">
-                <a href="{{ route('owner.dashboard') }}" class="nav-link"><i class="fas fa-th-large"></i> Dashboard</a>
                 <a href="#" class="nav-link active"><i class="fas fa-file-alt"></i> Manage Profile</a>
-                <a href="{{ route('owner.events.manage') }}" class="nav-link"><i class="far fa-calendar"></i> Manage Events</a>
-                <a href="{{ route('owner.culinary.manage') }}" class="nav-link"><i class="fas fa-utensils"></i> Manage Culinary</a>
-                <a href="{{ route('owner.reports.performance') }}" class="nav-link"><i class="fas fa-chart-bar"></i> Performance</a>
-                <a href="{{ route('owner.submission.status') }}" class="nav-link"><i class="far fa-file-alt"></i> Submissions</a>
             </nav>
             <div class="sidebar-footer">
                 <a href="{{ route('public.home') }}" class="nav-link" style="margin-bottom: 12px; color: #6b7280;"><i class="fas fa-arrow-left"></i> Back to Home</a>
@@ -438,12 +433,12 @@
             <div class="content-wrapper">
                 <h1 class="page-title">Manage Profile</h1>
 
-                <form action="{{ route('owner.profile.update') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('submission.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="editor-container">
                         <div class="editor-header">
                             <div class="editor-title">Content Editor</div>
-                            <div class="editor-subtitle">Update information about your tourism object.</div>
+                            <div class="editor-subtitle">Add information about your tourism object.</div>
                         </div>
 
                         <div class="content-block active">
@@ -453,17 +448,37 @@
                                 <span class="block-title">Hero Image (Thumbnail)</span>
                             </div>
                             
-                            <div class="hero-upload relative {{ $wisata->thumbnail ? 'has-image' : '' }}" onclick="document.getElementById('heroInput').click()">
+                            <div class="hero-upload relative" onclick="document.getElementById('heroInput').click()">
                                 
                                 <div class="upload-placeholder flex flex-col items-center">
                                     <p>Click to upload or change image</p>
                                     <span class="btn btn-primary pointer-events-none">Select Image</span>
                                 </div>
 
-                                <img src="{{ $wisata->thumbnail ? asset('storage/' . $wisata->thumbnail) : '' }}" 
+                                <img src="" 
                                      id="heroPreview" class="image-preview w-full h-full object-cover absolute inset-0">
                                 
                                 <input type="file" name="thumbnail" id="heroInput" class="hidden" accept="image/*" onchange="previewImage(this, 'heroPreview')">
+                            </div>
+                        </div>
+
+                        <div class="content-block">
+                            <div class="block-header">
+                                <i class="fas fa-file-contract block-icon"></i>
+                                <span class="block-title">Verification Document</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Bukti Kepemilikan / Surat Izin Usaha</label>
+                                <div class="p-4 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 text-center">
+                                    <input type="file" name="proof_document" required class="block w-full text-sm text-gray-500
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-full file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-teal-50 file:text-teal-700
+                                    hover:file:bg-teal-100
+                                    "/>
+                                    <p class="text-xs text-gray-500 mt-2">Upload PDF, JPG, or PNG (Max 5MB). Dokumen ini hanya untuk verifikasi admin.</p>
+                                </div>
                             </div>
                         </div>
 
@@ -476,12 +491,12 @@
                             
                             <div class="form-group">
                                 <label class="form-label">Tourism Name</label>
-                                <input type="text" name="name" class="form-input" value="{{ old('name', $wisata->name) }}">
+                                <input type="text" name="name" class="form-input" value="">
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Location Address</label>
-                                <input type="text" name="address" class="form-input" placeholder="Alamat lengkap wisata..." value="{{ old('address', $wisata->address) }}">
+                                <label class="form-label">Address / Location</label>
+                                <input type="text" name="address" class="form-input" placeholder="e.g. Jl. Raya Sidomulyo, Kec. Pronojiwo, Lumajang" required>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -490,7 +505,7 @@
                                     <select name="category_id" class="form-select w-full p-2 border rounded">
                                         <option value="">Select Category</option>
                                         @foreach($categories as $cat)
-                                            <option value="{{ $cat->id }}" {{ $wisata->category_id == $cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -500,7 +515,7 @@
                                     <div class="tags-wrapper flex flex-wrap gap-2">
                                         @foreach($tags as $tag)
                                             <label class="tag-option cursor-pointer">
-                                                <input type="checkbox" name="tags[]" value="{{ $tag->id }}" class="hidden" {{ $wisata->tags->contains($tag->id) ? 'checked' : '' }}>
+                                                <input type="checkbox" name="tags[]" value="{{ $tag->id }}" class="hidden">
                                                 <span class="tag-pill px-3 py-1 bg-gray-100 rounded-full text-sm hover:bg-gray-200 transition">{{ $tag->name }}</span>
                                             </label>
                                         @endforeach
@@ -511,21 +526,21 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                 <div class="form-group">
                                     <label class="form-label">Entry Fee (Tiket Masuk)</label>
-                                    <input type="text" name="ticket_price" class="form-input" placeholder="Rp 10.000" value="{{ old('ticket_price', $wisata->ticket_price) }}">
+                                    <input type="text" name="ticket_price" class="form-input" placeholder="Rp 10.000" value="">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Opening Time</label>
-                                    <input type="time" name="opening_hours" class="form-input" value="{{ old('opening_hours', $wisata->opening_hours) }}">
+                                    <input type="time" name="opening_hours" class="form-input" value="">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Closing Time</label>
-                                    <input type="time" name="closing_hours" class="form-input" value="{{ old('closing_hours', $wisata->closing_hours) }}">
+                                    <input type="time" name="closing_hours" class="form-input" value="">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label">Description</label>
-                                <textarea name="description" class="form-input" rows="4">{{ old('description', $wisata->description) }}</textarea>
+                                <textarea name="description" class="form-input" rows="4"></textarea>
                             </div>
                         </div>
 
@@ -538,18 +553,15 @@
                             
                             <div class="gallery-grid grid grid-cols-1 md:grid-cols-3 gap-4">
                                 @for($i = 0; $i < 3; $i++)
-                                    @php
-                                        $existingImage = $wisata->images->where('sort_order', $i + 1)->first();
-                                    @endphp
                                     
-                                    <div class="gallery-upload-item relative {{ $existingImage ? 'has-image' : '' }}" onclick="document.getElementById('galleryInput{{ $i }}').click()">
+                                    <div class="gallery-upload-item relative" onclick="document.getElementById('galleryInput{{ $i }}').click()">
                                         
                                         <div class="upload-placeholder text-center p-4">
                                             <i class="fas fa-plus text-gray-400 text-2xl mb-2"></i>
                                             <p class="text-xs text-gray-500">Image {{ $i + 1 }}</p>
                                         </div>
 
-                                        <img src="{{ $existingImage ? asset('storage/' . $existingImage->image_path) : '' }}" 
+                                        <img src="" 
                                              id="galleryPreview{{ $i }}" class="image-preview absolute inset-0 w-full h-full object-cover">
                                         
                                         <input type="file" name="gallery[{{ $i + 1 }}]" id="galleryInput{{ $i }}" class="hidden" accept="image/*" onchange="previewImage(this, 'galleryPreview{{ $i }}')">

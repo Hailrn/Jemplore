@@ -12,6 +12,7 @@ class TourismObject extends Model
     protected $fillable = [
         'user_id',
         'name',
+        'category_id',
         'description',
         'address',
         'thumbnail',

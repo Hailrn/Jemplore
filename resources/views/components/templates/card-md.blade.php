@@ -11,7 +11,7 @@
             <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60"></div>
 
             <div class="absolute top-4 left-4 right-4 flex justify-between items-start">
-                <span class="bg-[#47B6C2] text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm backdrop-blur-sm">
+                <span class="{{ $item['color'] }} text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm backdrop-blur-sm">
                     {{ $item['category'] }}
                 </span>
                 <span class="bg-white/90 text-[#060b0b] text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">

@@ -16,6 +16,7 @@ class Submission extends Model
         'payload',         
         'status',          
         'admin_feedback',
+        'proof_document',
     ];
 
     protected $casts = [

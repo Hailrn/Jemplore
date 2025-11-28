@@ -67,7 +67,7 @@
 
                     @else
                         
-                        <a href="#" class="flex items-center gap-2 bg-white border border-[#47b6c2] text-[#47b6c2] hover:bg-[#47b6c2] hover:text-white px-4 py-2 rounded-lg transition shadow-sm text-sm font-medium group">
+                        <a href="{{ route('submission.create') }}" class="flex items-center gap-2 bg-white border border-[#47b6c2] text-[#47b6c2] hover:bg-[#47b6c2] hover:text-white px-4 py-2 rounded-lg transition shadow-sm text-sm font-medium group">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             Ajukan Owner
                         </a>

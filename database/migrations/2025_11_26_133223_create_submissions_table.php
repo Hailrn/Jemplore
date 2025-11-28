@@ -22,6 +22,8 @@ return new class extends Migration
             
             $table->json('payload');
             
+            $table->string('proof_document')->nullable();
+            
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             
             $table->text('admin_feedback')->nullable();

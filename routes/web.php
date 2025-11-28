@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SubmissionController;
 
 // Public
 Route::name('public.')->group(function () {
@@ -27,20 +28,36 @@ Route::middleware(['auth', 'role:owner'])->prefix('owner')->name('owner.')->grou
     Route::get('/manage-culinary', function () { return view('owner.manageculinary'); })->name('culinary.manage');
     Route::get('/profile', [OwnerController::class, 'manageProfile'])->name('profile.manage');
     Route::post('/profile/update', [OwnerController::class, 'updateProfile'])->name('profile.update');
-    Route::get('/submission', function () { return view('owner.submission'); })->name('submission.status');
+    Route::get('/submission', [OwnerController::class, 'submissionStatus'])->name('submission.status');
     Route::get('/performance', function () { return view('owner.performance'); })->name('reports.performance');
+    Route::delete('/account/delete', [OwnerController::class, 'deleteAccount'])->name('account.delete');
 });
 
 // Admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () { return view('admin.admin_dashboard'); })->name('dashboard');
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
     Route::get('/verification', [AdminController::class, 'verification'])->name('verification');
     Route::post('/verification/{id}/approve', [AdminController::class, 'approve'])->name('verification.approve');
     Route::post('/verification/{id}/reject', [AdminController::class, 'reject'])->name('verification.reject');
-    Route::get('/users', function () { return view('admin.users'); })->name('users');
-    Route::get('/master-data', function () { return view('admin.masterdata'); })->name('masterdata');
+
+    // Route::get('/master-data', function () { return view('admin.masterdata'); })->name('masterdata');
     Route::get('/reports', function () { return view('admin.reports'); })->name('reports');
     Route::get('/settings', function () { return view('admin.settings'); })->name('settings');
+
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::delete('/users/{id}', [AdminController::class, 'deleteUser'])->name('users.delete');
+
+    Route::get('/master-data', [AdminController::class, 'masterData'])->name('masterdata');
+    Route::post('/category/store', [AdminController::class, 'storeCategory'])->name('category.store');
+    Route::delete('/category/{id}', [AdminController::class, 'deleteCategory'])->name('category.delete');
+    Route::post('/tag/store', [AdminController::class, 'storeTag'])->name('tag.store');
+    Route::delete('/tag/{id}', [AdminController::class, 'deleteTag'])->name('tag.delete');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/become-owner', [SubmissionController::class, 'create'])->name('submission.create');
+    Route::post('/become-owner/store', [SubmissionController::class, 'store'])->name('submission.store');
 });
 
 Route::get('/login', function () { return view('auth.login'); })->name('login');

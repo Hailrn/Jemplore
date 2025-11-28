@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
 
         $mainOwner = User::factory()->create([
             'name' => 'Juragan Tumpak Sewu',
-            'email' => 'tests@gmail.com',
+            'email' => 'test@gmail.com',
             'role' => 'owner',
             'google_id' => '12345_owner',
         ]);

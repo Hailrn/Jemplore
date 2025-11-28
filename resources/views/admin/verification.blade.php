@@ -60,7 +60,7 @@
             </div>
         @empty
             <div class="text-center py-10 bg-white rounded-xl shadow-sm">
-                <p class="text-gray-500">No pending submissions. Good job!</p>
+                <p class="text-gray-500">No pending submissions.</p>
             </div>
         @endforelse
 
